@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Calculator</title>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
+        <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
+        <style>
+          .main
+{
+    border: 4px solid red;
+    width: 290px;
+    margin: 0px auto;
+    padding: 2%;
+    background-color: blue;
+    border-radius: 10px;
+}
+h1
+{
+    margin-left: 30%;
+}
+table
+{
+    width: 100%;
+}
+td
+{
+    width: 25%;
+}
+button
+{
+    width: 100%;
+    background-color: aqua;
+    color: black;
+    height: 70px;
+    font-size: 22px;
+    cursor: pointer;
+    border: none;
+}
+textarea
+{
+    width: 98%;
+    height: 80px;
+    background-color:white;
+    border: none;
+    resize: none;
+    font-size: 1.5em;
+}
+.outer{
+    width:500px;
+    height:600px;
+    background-color: pink;
+}
+.b:hover{
+    background-color: gray;
+}
+        </style>
+    </head>
+    <body>
+        <center>
+        <div class="outer">
+        <h1 style="color:blue;">Calculator</h1>
+        <div class="main">
+            <table>
+                <tr>
+                    <textarea type="text" id="display" disabled></textarea>
+                </tr>
+                <tr>
+                    <td><button id="v1" class="b">1</button></td>
+                    <td><button id="v2" class="b">2</button></td>
+                    <td><button id="v3" class="b">3</button></td>
+                    <td><button id="v+" class="b"><i class="fa-solid fa-plus"></i></button></td>
+                </tr>
+                <tr>
+                    <td><button id="v4" class="b">4</button></td>
+                    <td><button id="v5" class="b">5</button></td>
+                    <td><button id="v6" class="b">6</button></td>
+                    <td><button id="v-" class="b"><i class="fa-solid fa-minus"></i></button></td>
+                </tr>
+                <tr>
+                    <td><button id="v7" class="b">7</button></td>
+                    <td><button id="v8" class="b">8</button></td>
+                    <td><button id="v9" class="b">9</button></td>
+                    <td><button id="v*" class="b"><i class="fa-solid fa-xmark"></i></button></td>
+                </tr>
+                <tr>
+                    <td><button id="v." class="b">.</button></td>
+                    <td><button id="v0" class="b">0</button></td>
+                    <td><button id="v=" class="b"><i class="fa-solid fa-equals"></i></button></td>
+                    <td><button id="v/" class="b"><i class="fa-solid fa-divide"></i></button></td>
+                </tr>
+                <tr>
+                    <td><button id="vclear" class="b">Clear</button></td>
+                    <td><button id="v%" class="b"><i class="fa-solid fa-percent"></i></button></td>
+                    <td><button id="vdel" class="b"><i class="fa-solid fa-delete-left"></i></button></td>
+                </tr>
+            </table>
+        </div>
+        </div> 
+        </center>
+        <script>
+            var display = document.getElementById("display");
+            var old_exp = "";
+            var expression = "";
+            var regex = /[0-9+-/%]+[+-/*%][0-9+-/*%]+/g;
+            function displayer(e){
+                display.textContent=e;
+            }
+            function CALC(exp){
+                if(regex.test(exp)){
+                    var result = eval(exp);
+                    if(result == "Infinity" || result == "NaN"){
+                        displayer("Invalid");
+                        $("textarea").css("background-color","lightcoral");
+                    }else{
+                        $("textarea").css("background-color","lightgreen");
+                        displayer(result);
+                    }
+                }else{
+                    $("textarea").css("background-color","lightcoral");
+                    displayer("Invalid");
+                }
+            }
+            $(document).ready(function(){
+                $("button").click(function(){
+                        if(this.id!="vclear" && this.id!="vdel" && this.id!="v="){
+                            expression = expression + this.id[1];
+                            displayer(expression);
+                        }else if(this.id=="v="){
+                            if(expression!="")CALC(expression)
+                        }else if(this.id=="vdel"){
+                            expression = expression.slice(0, expression.length-1);
+                            displayer(expression);
+                        }else{
+                            old_exp = expression;
+                            expression =" ";
+                            $("textarea").css("background-color","white");
+                            displayer(" ");
+                        }
+                });
+            });
+        </script>
+    </body>
+</html>
